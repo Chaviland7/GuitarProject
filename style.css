@@ -1,3 +1,16 @@
-h1 {
+div.front_page {
+  text-align: center;
+  margin-bottom: 200px;
+}
+input {
+  margin-top: 20px;
+  margin-bottom: 10px;
+}
+h1.correct {
   color: green;
+  font-size: 46px;
+  font-family: Verdana;
+}
+#NoteResults,#ChordProgression {
+  display: none;
 }
