@@ -64,6 +64,14 @@
             return "Sorry, the answer was "+$scope.note;
           }
         };
+        $scope.class = function() {
+          if ($scope.note == $scope.guess) {
+            return 'correct';
+          }
+          else {
+            return 'incorrect';
+          }
+        }
         $('.show_results').click(function() {
           $('#NoteResults').toggle();
         });
@@ -134,7 +142,7 @@
         <button class="show_results">Check</button>
       </div>
       <div id="NoteResults" class="col-md-12 results">
-        <h1 class="correct">{{output()}}</h1>
+        <h1 class="{{class()}}">{{output()}}</h1>
         <button class="continue">Continue</button>
       </div>
     </div>
