@@ -56,16 +56,16 @@
 
       var NotesApp = angular.module("NotesApp", []);
       NotesApp.controller("NotesController", function($scope, $http) {
-        $scope.output = 'begin_value';
-        $('.show_results').click(function() {
-          $('#NoteResults').toggle();
-          alert($scope.guess + " " + $scope.note);
+        $scope.output = function() {
           if ($scope.note == $scope.guess) {
-            $scope.output = 'Correct!';
+            return 'Correct!';
           }
           else {
-            $scope.output = "Sorry, the answer was "+$scope.note;
+            return "Sorry, the answer was "+$scope.note;
           }
+        };
+        $('.show_results').click(function() {
+          $('#NoteResults').toggle();
         });
         $('.generate_note').click(function() {
           $('button.show_results').css('display','block');
@@ -126,7 +126,7 @@
       <h1>Strings and Notes</h1>
       <hr />
       <div class="col-md-6">
-        <h2>{{string+' - '+fret+" - "+output}}</h2>
+        <h2>{{string+' - '+fret}}</h2>
       </div>
       <div class="col-md-6">
         <input id="NoteGuess" placeholder="Note (Whole or Sharp)" data-ng-model="guess">
@@ -134,7 +134,7 @@
         <button class="show_results">Check</button>
       </div>
       <div id="NoteResults" class="col-md-12 results">
-        <h1 class="correct">{{output}}</h1>
+        <h1 class="correct">{{output()}}</h1>
         <button class="continue">Continue</button>
       </div>
     </div>
