@@ -24,9 +24,6 @@
 
     <script>
       $(document).ready(function() {
-        $('button.show_results').click(function(){
-          $('#NoteResults').css('display','block');
-        });
         $('button.start_progression').click(function(){
           $(this).css('display','none');
           $('#ChordProgression').css('display','block');
@@ -43,35 +40,58 @@
       });
     </script>
     <script>
-      var NotesApp = angular.module("NotesApp", []);
+      function display_number(num) {
+        if (num == 1) return '1st';
+        if (num == '2') return '2nd';
+        if (num == '3') return '3rd';
+        else return num+'th';
+      }
+      function display_string(string_num) {
+        return display_number(string_num)+' String';
+      }
+      function display_fret(fret_num) {
+        if (fret_num == 0) return 'Open';
+        else return display_number(fret_num)+' Fret';
+      }
 
-      NotesApp.controller("NotesController", function($scope) {
-        $scope.string = 3;
-        $scope.fret = 5;
+      var NotesApp = angular.module("NotesApp", []);
+      NotesApp.controller("NotesController", function($scope, $http) {
+        $scope.output = 'begin_value';
+        $('.show_results').click(function() {
+          $('#NoteResults').toggle();
+          alert($scope.guess + " " + $scope.note);
+          if ($scope.note == $scope.guess) {
+            $scope.output = 'Correct!';
+          }
+          else {
+            $scope.output = "Sorry, the answer was "+$scope.note;
+          }
+        });
+        $('.generate_note').click(function() {
+          $('button.show_results').css('display','block');
+          $('#NoteGuess').css('display','block');
+          $(this).toggle();
+          $http.get("sequel.php").then(function (response) {
+            var rows = response.data.records;
+            rows.forEach(function(row) {
+              $scope.ID = row.ID;
+              $scope.string = display_string(row.String);
+              $scope.fret = display_fret(row.Fret);
+              $scope.guess = null;
+              $scope.note = row.Note;
+            });
+          });
+        });
+        $('button.continue').click(function(){
+          $('#NoteResults').toggle();
+          $('#NoteGuess').toggle();
+          $('button.show_results').toggle();
+          $('button.generate_note').toggle();
+        });
       });
     </script>
   </head>
   <body>
-    <?php
-      $server = 'localhost';
-      $user = 'root';
-      $pass = 'root';
-      $dbname = 'guitar';
-      $connection = new mysqli($server, $user, $pass);
-      if ($connection->connect_error) {
-        die('Connect Error (' . $connection->connect_errno . ') '. $connection->connect_error);
-      }
-      $db = mysqli_select_db($connection, $dbname);
-      function display_number($num) {
-        return ($num == 1) ? '1st' : (($num == 2) ? '2nd' : (($num == 3) ? '3rd' : $num.'th'));
-      }
-      function display_string($string_num) {
-        return display_number($string_num).' String';
-      }
-      function display_fret($fret_num) {
-        return ($fret_num == 0) ? 'Open' : display_number($fret_num).' Fret';
-      }
-    ?>
     <nav class="navbar navbar-default">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -106,23 +126,16 @@
       <h1>Strings and Notes</h1>
       <hr />
       <div class="col-md-6">
-        <?php
-          $query = mysqli_query($connection,'SELECT * FROM string_notes ORDER BY RAND() LIMIT 1');
-          while ($row = mysqli_fetch_array($query)) {
-            $id = $row["ID"];
-            $string = $row["string"];
-            $fret = $row["fret"];
-            $note = $row["note"];
-            echo '<h2>'.display_string($string).' '.display_fret($fret).'</h2>';
-          }
-        ?>
+        <h2>{{string+' - '+fret+" - "+output}}</h2>
       </div>
       <div class="col-md-6">
-        <input placeholder="Note (Whole or Sharp)"></input>
+        <input id="NoteGuess" placeholder="Note (Whole or Sharp)" data-ng-model="guess">
+        <button class="generate_note">Start</button>
         <button class="show_results">Check</button>
       </div>
       <div id="NoteResults" class="col-md-12 results">
-        <h1 class="correct">Correct!</h1>
+        <h1 class="correct">{{output}}</h1>
+        <button class="continue">Continue</button>
       </div>
     </div>
     <div class="col-md-12 front_page" id="Chords">

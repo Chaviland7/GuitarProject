@@ -11,6 +11,6 @@ h1.correct {
   font-size: 46px;
   font-family: Verdana;
 }
-#NoteResults,#ChordProgression {
+#NoteResults,#ChordProgression,#NoteGuess,button.show_results {
   display: none;
 }
