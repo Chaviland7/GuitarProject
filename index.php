@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
@@ -21,9 +22,22 @@
 		<link rel="shortcut icon" href="">
 
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <script>
       $(document).ready(function() {
+        jQuery(function() {
+				  jQuery('a[href*="#"]:not([href="#"])').click(function() {
+				    if (location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
+				      var target = jQuery(this.hash);
+				      target = target.length ? target : jQuery('[name=' + this.hash.slice(1) +']');
+				      if (target.length) {
+				        jQuery('html, body').animate({
+				          scrollTop: target.offset().top - 300
+				        }, 1000);
+				        return false;
+				      }
+				    }
+				  });
+				});
         $('button.start_progression').click(function(){
           $(this).css('display','none');
           $('#ChordProgression').css('display','block');
@@ -37,6 +51,7 @@
           },
           3500); // every 1 second
         });
+        $('body').scrollspy({target:'#navbar',offset:300});
       });
     </script>
     <script>
@@ -72,8 +87,11 @@
             return 'incorrect';
           }
         }
+        $scope.streak = 0;
         $('.show_results').click(function() {
           $('#NoteResults').toggle();
+          if ($scope.output() != "Correct!") $scope.streak = 0;
+          else $scope.streak += 1;
         });
         $('.generate_note').click(function() {
           $('button.show_results').css('display','block');
@@ -100,7 +118,7 @@
     </script>
   </head>
   <body>
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
@@ -113,11 +131,12 @@
           <a class="navbar-brand" href="#">Guitar Project</a>
         </div>
 
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="#Home">Home<span class="sr-only">(current)</span></a></li>
+        <div class="collapse navbar-collapse" id="navbar">
+          <ul class="nav navbar-nav" role="tablist">
+            <li class="active"><a href="#Home">Home</a></li>
             <li><a href="#StringsNotes">Strings & Notes</a></li>
+            <li><a href="#Chords">Chords</a></li>
+            <li><a href="#Scales">Scales</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">Link</a></li>
@@ -135,6 +154,7 @@
       <hr />
       <div class="col-md-6">
         <h2>{{string+' - '+fret}}</h2>
+        <h2>Streak: {{streak}}</h2>
       </div>
       <div class="col-md-6">
         <input id="NoteGuess" placeholder="Note (Whole or Sharp)" data-ng-model="guess">
@@ -152,6 +172,19 @@
       <div class="col-md-12 chords">
         <button class="start_progression">Go!</button>
         <h1 id="ChordProgression">*Chord Progression Here*</h1>
+      </div>
+    </div>
+    <div class="col-md-12 front_page" id="Scales">
+      <h1>Name That Scale</h1>
+      <hr />
+      <div class="col-md-12 scale">
+        <button class="create_scale">Go!</button>
+      </div>
+      <div class="col-md-6">
+        <canvas height="600" width="500" id="canvas">Test Text</canvas>
+        <script type='text/javascript' src='drawing.js'></script>
+      </div>
+      <div class="col-md-6">
       </div>
     </div>
   </body>
