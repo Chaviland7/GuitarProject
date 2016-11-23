@@ -55,7 +55,7 @@
       });
     </script>
   </head>
-  <body>
+  <body data-ng-app="GuitarApp">
     <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -87,7 +87,7 @@
       <hr />
       <h2>Please choose from any of the below activities</h2>
     </div>
-    <div data-ng-app="NotesApp" data-ng-controller="NotesController" class="col-md-12 front_page" id="StringsNotes">
+    <div data-ng-controller="NotesController" class="col-md-12 front_page" id="StringsNotes">
       <h1>Strings and Notes</h1>
       <hr />
       <div class="col-md-6">
@@ -112,20 +112,27 @@
         <h1 id="ChordProgression">*Chord Progression Here*</h1>
       </div>
     </div>
-    <div class="col-md-12 front_page" id="Scales">
+    <div data-ng-controller="ScalesController" class="col-md-12 front_page" id="Scales">
       <h1>Name That Scale</h1>
       <hr />
       <div class="col-md-12 scale">
-        <button class="create_scale">Go!</button>
+        <button class="create_scale">Start</button>
       </div>
       <div class="col-md-6">
         <canvas height="600" width="500" id="canvas">Test Text</canvas>
       </div>
-      <div class="col-md-6">
-        <h1 id="ScaleName">testing</h1>
+      <div class="ScaleContainer">
+        <div class="col-md-6">
+          <input id="ScaleGuess" placeholder="{{testing}}" data-ng-model="guess">
+          <button class="show_results">Check</button>
+        </div>
+        <div id="ScaleResults" class="col-md-6 results">
+          <h1 class="{{class()}}">{{output()}}</h1>
+          <button class="continue">Continue</button>
+        </div>
       </div>
     </div>
-    <script type='text/javascript' src='drawing.js'></script>
     <script type='text/javascript' src='notesController.js'></script>
+    <script type='text/javascript' src='drawing.js'></script>
   </body>
 </html>

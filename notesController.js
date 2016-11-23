@@ -12,8 +12,9 @@ function display_fret(fret_num) {
   else return display_number(fret_num)+' Fret';
 }
 
-var NotesApp = angular.module("NotesApp", []);
-NotesApp.controller("NotesController", function($scope, $http) {
+var GuitarApp = angular.module("GuitarApp", []);
+
+GuitarApp.controller("NotesController", function($scope, $http) {
   $scope.output = function() {
     if ($scope.note == $scope.guess) {
       return 'Correct!';
@@ -31,13 +32,14 @@ NotesApp.controller("NotesController", function($scope, $http) {
     }
   }
   $scope.streak = 0;
-  $('.show_results').click(function() {
+  $('#StringsNotes .show_results').click(function() {
     $('#NoteResults').toggle();
+    $('#NoteGuess').prop('disabled',true);
     if ($scope.output() != "Correct!") $scope.streak = 0;
     else $scope.streak += 1;
   });
   $('.generate_note').click(function() {
-    $('button.show_results').css('display','block');
+    $('#StringsNotes button.show_results').css('display','block');
     $('#NoteGuess').css('display','block');
     $(this).toggle();
     $http.get("sequel.php").then(function (response) {
@@ -51,10 +53,11 @@ NotesApp.controller("NotesController", function($scope, $http) {
       });
     });
   });
-  $('button.continue').click(function(){
+  $('#StringsNotes button.continue').click(function(){
     $('#NoteResults').toggle();
     $('#NoteGuess').toggle();
-    $('button.show_results').toggle();
+    $('#StringsNotes button.show_results').toggle();
     $('button.generate_note').toggle();
+    $('#NoteGuess').prop('disabled',false);
   });
 });
