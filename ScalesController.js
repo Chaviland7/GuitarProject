@@ -1,5 +1,5 @@
 var my_canvas = document.getElementById("canvas");
-my_canvas.height = 600;
+my_canvas.height = 900;
 my_canvas.width = 550;
 var context = my_canvas.getContext("2d");
 
@@ -16,11 +16,11 @@ function createScale(scale) {
   for (var string = 6; string > 0; string--) {
     context.beginPath();
     context.moveTo((string*100-100)+25,0);
-    context.lineTo((string*100-100)+25,600);
+    context.lineTo((string*100-100)+25,900);
     context.stroke();
   }
   /* Draw Frets! */
-  for (var fret = 0; fret < 5; fret++) {
+  for (var fret = 0; fret < 7; fret++) {
     context.beginPath();
     context.moveTo(25,150*fret);
     context.lineTo(525,150*fret);
@@ -57,6 +57,16 @@ GuitarApp.controller("ScalesController", function($scope) {
       }
     } else {
       return "Please enter a value";
+    }
+  }
+  $scope.class = function() {
+    if ($scope.guess) {
+      if ($scope.guess == scale[1]) {
+        return 'correct';
+      }
+      else {
+        return 'incorrect';
+      }
     }
   }
   $scope.streak = 0;

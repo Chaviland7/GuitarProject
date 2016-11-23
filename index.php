@@ -132,7 +132,7 @@
         </div>
       </div>
     </div>
-    <script type='text/javascript' src='notesController.js'></script>
-    <script type='text/javascript' src='drawing.js'></script>
+    <script type='text/javascript' src='NotesController.js'></script>
+    <script type='text/javascript' src='ScalesController.js'></script>
   </body>
 </html>
