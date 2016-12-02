@@ -32,6 +32,8 @@ GuitarApp.controller("NotesController", function($scope, $http) {
     }
   }
   $scope.streak = 0;
+  $scope.ID = 0;
+  $scope.accumulator = [0];
   $('#StringsNotes .show_results').click(function() {
     $('#NoteResults').toggle();
     $('#NoteGuess').prop('disabled',true);
@@ -42,16 +44,21 @@ GuitarApp.controller("NotesController", function($scope, $http) {
     $('#StringsNotes button.show_results').css('display','block');
     $('#NoteGuess').css('display','block');
     $(this).toggle();
-    $http.get("sequel.php").then(function (response) {
-      var rows = response.data.records;
-      rows.forEach(function(row) {
-        $scope.ID = row.ID;
-        $scope.string = display_string(row.String);
-        $scope.fret = display_fret(row.Fret);
-        $scope.guess = null;
-        $scope.note = row.Note;
+    //alert($scope.accumulator+"  "+$scope.ID+" "+$scope.accumulator.indexOf($scope.ID))
+    //while($scope.accumulator.indexOf($scope.ID) != -1) {
+      $http.get("notes.php").then(function (response) {
+        var rows = response.data.records;
+        rows.forEach(function(row) {
+          $scope.ID = row.ID;
+          $scope.string = display_string(row.String);
+          $scope.fret = display_fret(row.Fret);
+          $scope.guess = null;
+          $scope.note = row.Note;
+        });
       });
-    });
+    //};
+    //$scope.accumulator.push($scope.ID);
+    //alert($scope.accumulator);
   });
   $('#StringsNotes button.continue').click(function(){
     $('#NoteResults').toggle();

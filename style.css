@@ -18,7 +18,7 @@ h1.correct, h1.incorrect {
 h1.incorrect {
   color: red;
 }
-#NoteResults,#ScaleResults,#ScaleGuess,#ChordProgression,#NoteGuess,button.show_results {
+#NoteResults,#ScaleResults,#TriadResults,#ScaleGuess,.TriadContainer,#ChordProgression,#NoteGuess,button.show_results {
   display: none;
 }
 

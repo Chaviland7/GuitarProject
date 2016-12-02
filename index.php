@@ -75,6 +75,7 @@
             <li><a href="#StringsNotes">Strings & Notes</a></li>
             <li><a href="#Chords">Chords</a></li>
             <li><a href="#Scales">Scales</a></li>
+            <li><a href="#Triads">Triads</a></li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">Link</a></li>
@@ -119,11 +120,12 @@
         <button class="create_scale">Start</button>
       </div>
       <div class="col-md-6">
-        <canvas height="600" width="500" id="canvas">Test Text</canvas>
+        <canvas height="600" width="500" id="ScaleCanvas">Test Text</canvas>
+        <h2>Streak: {{streak}}</h2>
       </div>
       <div class="ScaleContainer">
         <div class="col-md-6">
-          <input id="ScaleGuess" placeholder="{{testing}}" data-ng-model="guess">
+          <input id="ScaleGuess" placeholder="Enter Scale Name" data-ng-model="guess">
           <button class="show_results">Check</button>
         </div>
         <div id="ScaleResults" class="col-md-6 results">
@@ -132,7 +134,30 @@
         </div>
       </div>
     </div>
+    <div data-ng-controller="TriadsController" class="col-md-12 front_page" id="Triads">
+      <h1>Triads and Power Chords</h1>
+      <hr />
+      <div class="col-md-12 scale">
+        <button class="create_triads">Start</button>
+      </div>
+      <div class="col-md-6">
+        <canvas height="600" width="500" id="TriadCanvas">Test Text</canvas>
+        <h2>Streak: {{streak}}</h2>
+      </div>
+      <div class="TriadContainer">
+        <div class="col-md-6">
+          <input id="TriadFormGuess" placeholder="Enter The Chord Name/Form" data-ng-model="form_guess">
+          <input id="TriadRootGuess" placeholder="Enter The Root Note" data-ng-model="root_guess">
+          <button class="show_results">Check</button>
+        </div>
+        <div id="TriadResults" class="col-md-6 results">
+          <h1 class="{{class()}}">{{output()}}</h1>
+          <button class="continue">Continue</button>
+        </div>
+      </div>
+    </div>
     <script type='text/javascript' src='NotesController.js'></script>
     <script type='text/javascript' src='ScalesController.js'></script>
+    <script type='text/javascript' src='TriadsController.js'></script>
   </body>
 </html>
