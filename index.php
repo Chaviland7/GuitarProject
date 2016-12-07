@@ -148,7 +148,7 @@
         <div class="col-md-6">
           <input id="TriadFormGuess" placeholder="Enter The Chord Name/Form" data-ng-model="form_guess">
           <input id="TriadRootGuess" placeholder="Enter The Root Note" data-ng-model="root_guess">
-          <button class="show_results">Check</button>
+          <button class="show_results" id="SubmitTriadGuess">Check</button>
         </div>
         <div id="TriadResults" class="col-md-6 results">
           <h1 class="{{class()}}">{{output()}}</h1>

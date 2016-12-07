@@ -4,29 +4,37 @@ TriadCanvas.width = 600;
 var TriadContext = TriadCanvas.getContext("2d");
 var fret_num;
 
-var fifth_form_power_chord = {
-  notes: [[2,0,0,0,0,0],[0,0,0,0,0,0],[0,1,1,0,0,0]],
-  type: "Power Chord",
-  name: 'Fifth Form Power Chord',
-  root_string: 6,
-  root_fret: 1
-};
-var fourth_form_power_chord = {
-  notes: [[0,2,0,0,0,0],[0,0,0,0,0,0],[0,0,1,1,0,0]],
-  type: "Power Chord",
-  name: 'Fourth Form Power Chord',
-  root_string: 5,
-  root_fret: 1
-};
-var power_chords = [fifth_form_power_chord,fourth_form_power_chord];
 
-var all_chords = /*triads.concat()*/power_chords;
+var first_form_major_triad = {notes: [[0,0,0,0,0,0],[0,0,0,0,1,2],[0,0,0,1,0,0]],type: "Triad",name: 'First Form Major Triad',root_string: 1,root_fret: 2};
+var fourth_form_major_triad = {notes: [[0,0,0,0,0,1],[0,0,0,0,0,0],[0,0,0,2,1,0]],type: "Triad",name: 'Fourth Form Major Triad',root_string: 3,root_fret: 3};
+var d_form_major_triad = {notes: [[0,0,0,1,0,1],[0,0,0,0,2,0],[0,0,0,0,0,0]],type: "Triad",name: 'D Form Major Triad',root_string: 2,root_fret: 2};
+var first_form_major_triad_2 = {notes: [[0,0,0,0,1,0],[0,0,0,1,0,0],[0,0,2,0,0,0]],type: "Triad",name: 'First Form Major Triad',root_string: 4,root_fret: 3};
+var fourth_form_major_triad_2 = {notes: [[0,0,0,0,0,0],[0,0,0,0,0,0],[0,0,1,2,1,0]],type: "Triad",name: 'Fourth Form Major Triad',root_string: 3,root_fret: 3};
+var d_form_major_triad_2 = {notes: [[0,0,0,1,0,0],[0,0,0,0,2,0],[0,0,1,0,0,0]],type: "Triad",name: 'D Form Major Triad',root_string: 2,root_fret: 2};
+var major_triads = [first_form_major_triad,fourth_form_major_triad,d_form_major_triad,first_form_major_triad_2,fourth_form_major_triad_2,d_form_major_triad_2];
+
+var first_form_minor_triad = {notes: [[0,0,0,1,1,2],[0,0,0,0,0,0],[0,0,0,0,0,0]],type: "Triad",name: 'First Form Minor Triad',root_string: 1,root_fret: 1};
+var fourth_form_minor_triad = {notes: [[0,0,0,0,0,1],[0,0,0,0,1,0],[0,0,0,2,0,0]],type: "Triad",name: 'Fourth Form Minor Triad',root_string: 3,root_fret: 3};
+var d_form_minor_triad = {notes: [[0,0,0,0,0,1],[0,0,0,1,0,0],[0,0,0,0,2,0]],type: "Triad",name: 'D Form Minor Triad',root_string: 2,root_fret: 3};
+var first_form_minor_triad_2 = {notes: [[0,0,0,1,1,0],[0,0,0,0,0,0],[0,0,2,0,0,0]],type: "Triad",name: 'First Form Minor Triad',root_string: 4,root_fret: 3};
+var fourth_form_minor_triad_2 = {notes: [[0,0,0,0,0,0],[0,0,0,0,1,0],[0,0,1,2,0,0]],type: "Triad",name: 'Fourth Form Minor Triad',root_string: 3,root_fret: 3};
+var d_form_minor_triad_2 = {notes: [[0,0,0,1,0,0],[0,0,1,0,2,0],[0,0,0,0,0,0]],type: "Triad",name: 'D Form Minor Triad',root_string: 2,root_fret: 2};
+var minor_triads = [first_form_minor_triad,fourth_form_minor_triad,d_form_minor_triad,first_form_minor_triad_2,fourth_form_minor_triad_2,d_form_minor_triad_2];
+
+var triads = major_triads.concat(minor_triads);
+
+var first_form_power_chord = {notes: [[2,0,0,0,0,0],[0,0,0,0,0,0],[0,1,1,0,0,0]],type: "Power Chord",name: 'First Form Power Chord',root_string: 6,root_fret: 1};
+var fourth_form_power_chord = {notes: [[0,2,0,0,0,0],[0,0,0,0,0,0],[0,0,1,1,0,0]],type: "Power Chord",name: 'Fourth Form Power Chord',root_string: 5,root_fret: 1};
+var power_chords = [first_form_power_chord,fourth_form_power_chord];
+
+var all_chords = triads.concat(power_chords);
 
 function getRandomInt(min, max) {
   min = Math.ceil(min);
   max = Math.floor(max);
   return Math.floor(Math.random() * (max - min)) + min;
 }
+
 function pickTriad(chord_name) {
   fret_num = getRandomInt(1,12);
   var jsTriad;
@@ -72,11 +80,15 @@ function drawTriad(triad) {
   }
 }
 
+//hitting enter submits the request
+document.getElementById("TriadFormGuess").addEventListener("keyup", function(event) {event.preventDefault();if (event.keyCode == 13) {document.getElementById("SubmitTriadGuess").click();}});
+document.getElementById("TriadRootGuess").addEventListener("keyup", function(event) {event.preventDefault();if (event.keyCode == 13) {document.getElementById("SubmitTriadGuess").click();}});
+
 GuitarApp.controller("TriadsController", function($scope, $http) {
   var triad;
   $scope.output = function() {
     if ($scope.form_guess && $scope.root_guess) {
-      if (($scope.form_guess == $scope.form) && ($scope.root_guess = $scope.root)) {//both right
+      if (($scope.form_guess == $scope.form) && ($scope.root_guess == $scope.root)) {//both right
         return "Correct!";
       }
       else if ($scope.form_guess == $scope.form) {//right form
@@ -94,7 +106,7 @@ GuitarApp.controller("TriadsController", function($scope, $http) {
   }
   $scope.class = function() {
     if ($scope.form_guess && $scope.root_guess) {
-      if (($scope.form_guess == $scope.form) && ($scope.root_guess = $scope.root)) {
+      if (($scope.form_guess == $scope.form) && ($scope.root_guess == $scope.root)) {
         return 'correct';
       }
       else {
@@ -127,7 +139,6 @@ GuitarApp.controller("TriadsController", function($scope, $http) {
       },
       headers: {"Access-Control-Allow-Origin":"*", "Content-Type": "application/json; charset=UTF-8"}
     });
-
     request.success(function (data) {
       $scope.root = data.records.Note;
       drawTriad(triad);
